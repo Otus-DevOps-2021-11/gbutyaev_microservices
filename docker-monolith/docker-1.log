@@ -1,0 +1,3 @@
+gleb@DESKTOP-PK91DF6:~$ docker images
+REPOSITORY                  TAG                            IMAGE ID       CREATED         SIZE
+gbutyaev/ubuntu-tmp-file    latest                         c2dc3cac60b8   7 seconds ago   63.2MB
