@@ -1,5 +1,5 @@
 build_info.txt
 prometheus/
-.env.example
+.env
 ## python specific
 *.pyc
