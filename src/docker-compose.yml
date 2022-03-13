@@ -13,7 +13,7 @@ services:
     build: ./ui
     image: ${UserName}/ui:{$UI_VERSION}
     ports:
-      - {$PUBLIC_PORT}
+      - {$PUBLIC_PORT}/tcp
     networks:
       front:
         aliases:
