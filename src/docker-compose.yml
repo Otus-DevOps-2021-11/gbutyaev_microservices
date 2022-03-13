@@ -49,4 +49,3 @@ networks:
   front:
     external:
       name: 
-
