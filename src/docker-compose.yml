@@ -48,4 +48,4 @@ networks:
       name: back_net
   front:
     external:
-      name: 
+      name: front_net
