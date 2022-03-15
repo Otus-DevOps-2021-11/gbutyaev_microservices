@@ -36,4 +36,3 @@ gbutyaev microservices repository
 - Установил docker-compose на локальную машину
 - Создал файл /src/docker-compose.yml
 - Параметризировал docker-compose.yml
- 
