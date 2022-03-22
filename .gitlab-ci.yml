@@ -56,7 +56,7 @@ staging:
   when: manual
   script:
     - echo "Deploy"
-  evnvironment:
+  environment:
     name: beta
     url: http://beta.example.com
 
