@@ -46,6 +46,6 @@ deploy_dev_job:
   stage: review
   script:
     - echo 'Deploy'
-environment:
- name: dev
- url: http://dev.example.com 
+  environment:
+    name: dev
+    url: http://dev.example.com 
