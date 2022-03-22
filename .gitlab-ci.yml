@@ -51,6 +51,17 @@ deploy_dev_job:
     name: dev
     url: http://dev.example.com 
 
+stage:
+  stage: stage
+  when: manual
+  only:
+    - /^\d+\.\d+\.\d+/
+  script:
+    - echo 'Deploy'
+  environment:
+    name: stage
+    url: https://beta.example.com
+
 staging:
   stage: stage
   when: manual
