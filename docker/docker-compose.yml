@@ -11,7 +11,7 @@ services:
           - posts
   ui:
     build: ./ui
-    image: ${UserName}/ui:{$UI_VERSION}
+    image: ${UserName}/ui:1.0
     ports:
       - ${PUBLIC_PORT}/tcp
     networks:
@@ -20,7 +20,7 @@ services:
           - ui
   post:
     build: ./post-py
-    image: ${UserName}/post:{$POST_VERSION}
+    image: ${UserName}/post:1.0
     networks:
       back:
         aliases:
@@ -30,7 +30,7 @@ services:
           - post
   comment:
     build: ./comment
-    image: ${UserName}/comment:{$COMMENT_VERSION}
+    image: ${UserName}/comment:1.0
     networks:
       back:
         aliases:
@@ -38,9 +38,24 @@ services:
       front:
         aliases:
           - comment
+  prometheus:
+    image: gbutyaev/prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - prometheus_data:/prometheus
+    command: #передаем доп параметры в командной строке
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention=1d' #задаем время хранение метрик в один день
+    networks:
+      - front
+      - back
+
 
 volumes:
   post_db:
+  prometheus_data:
 
 networks:
   back:
