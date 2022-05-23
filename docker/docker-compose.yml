@@ -12,7 +12,7 @@ services:
 
   ui:
     build: ./ui
-    image: ${UserName}/ui:${UI_VERSION}
+    image: ${USERNAME}/ui:${UI_VERSION}
     ports:
       - '9292:9292'
     networks:
@@ -20,14 +20,14 @@ services:
 
   post:
     build: ./post-py
-    image: ${UserName}/post:${POST_VERSION}
+    image: ${USERNAME}/post:${POST_VERSION}
     networks:
       - back_net
       - front_net
 
   comment:
     build: ./comment
-    image: ${UserName}/comment:${COMMENT_VERSION}
+    image: ${USENAME}/comment:${COMMENT_VERSION}
     networks:
       - back_net
       - front_net
