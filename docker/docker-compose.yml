@@ -5,39 +5,33 @@ services:
     volumes:
       - post_db:/data/db
     networks:
-      back:
+      back_net:
         aliases:
+          - comment_db
           - post_db
-          - posts
+
   ui:
     build: ./ui
-    image: ${UserName}/ui:1.0
+    image: ${UserName}/ui:${UI_VERSION}
     ports:
-      - ${PUBLIC_PORT}/tcp
+      - '9292:9292'
     networks:
-      front:
-        aliases:
-          - ui
+      - front_net
+
   post:
     build: ./post-py
-    image: ${UserName}/post:1.0
+    image: ${UserName}/post:${POST_VERSION}
     networks:
-      back:
-        aliases:
-          - post
-      front:
-        aliases:
-          - post
+      - back_net
+      - front_net
+
   comment:
     build: ./comment
-    image: ${UserName}/comment:1.0
+    image: ${UserName}/comment:${COMMENT_VERSION}
     networks:
-      back:
-        aliases:
-          - comment
-      front:
-        aliases:
-          - comment
+      - back_net
+      - front_net
+
   prometheus:
     image: gbutyaev/prometheus
     ports:
@@ -49,18 +43,36 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=1d' #задаем время хранение метрик в один день
     networks:
-      - front
-      - back
+      - front_net
+      - back_net
+ 
 
+  node-exporter:
+    image: prom/node-exporter:v0.15.2
+    user: root
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"' 
+    networks:
+      - front_net
+      - back_net    
 
 volumes:
   post_db:
   prometheus_data:
 
+
 networks:
-  back:
-    external:
-      name: back_net
-  front:
-    external:
-      name: front_net
+  back_net:
+    ipam:
+      config:
+        - subnet: 10.0.2.0/24
+  front_net:
+    ipam:
+      config:
+        - subnet: 10.0.1.0/24
