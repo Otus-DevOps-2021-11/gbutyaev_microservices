@@ -75,4 +75,4 @@ gbutyaev microservices repository
 - В UI получил информацию об использовании CPU, используя `node_load1`
 - Зашел на хост - `docker-machine ssh docker-host` и добавил нагрузки - `yes > /dev/null`
 - В UI на `node_load1`- зафиксировал изменение состояние - нагрузка увеличилась 
-- Запушил собранные образы в свой аккаунт на DockerHub - `gbutyaev`
+- Запушил собранные образы в свой аккаунт на DockerHub - <https://hub.docker.com/u/gbutyaev>
