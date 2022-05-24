@@ -1,5 +1,5 @@
 build_info.txt
-prometheus/
-.env
+/src/.env
+/docker/.env
 ## python specific
 *.pyc
