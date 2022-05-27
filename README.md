@@ -102,4 +102,3 @@ $ docker-compose up -d
 - В `fluent.conf` заменил регулярные выражение `grok` шаблонами, перезапустил сервисы, проверил работу
 - Добавил в `docker-compose-logging` сервис `zipkin`
 - В `docker-compose` довил окружение `zipkin` в каждый сервис. Проверил работу в UI
-- 
