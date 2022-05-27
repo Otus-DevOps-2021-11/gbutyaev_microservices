@@ -4,6 +4,8 @@ services:
     image: mongo:3.2
     volumes:
       - post_db:/data/db
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}      
     networks:
       back_net:
         aliases:
@@ -17,10 +19,27 @@ services:
       - '9292:9292'
     networks:
       - front_net
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}            
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.ui
+
 
   post:
   # build: ./post-py
     image: ${USERNAME}/post:${POST_VERSION}
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: service.post  
+    depends_on:
+      - post_db
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}            
     networks:
       - back_net
       - front_net
@@ -28,6 +47,8 @@ services:
   comment:
   #  build: ./comment
     image: ${USERNAME}/comment:${COMMENT_VERSION}
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}          
     networks:
       - back_net
       - front_net
@@ -42,6 +63,8 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention=1d' #задаем время хранение метрик в один день
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}            
     networks:
       - front_net
       - back_net
@@ -58,6 +81,8 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.ignored-mount-points="^/(sys|proc|dev|host|etc)($$|/)"' 
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}            
     networks:
       - front_net
       - back_net    
