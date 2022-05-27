@@ -75,4 +75,31 @@ gbutyaev microservices repository
 - В UI получил информацию об использовании CPU, используя `node_load1`
 - Зашел на хост - `docker-machine ssh docker-host` и добавил нагрузки - `yes > /dev/null`
 - В UI на `node_load1`- зафиксировал изменение состояние - нагрузка увеличилась 
-- Запушил собранные образы в свой аккаунт на DockerHub - <https://hub.docker.com/u/gbutyaev>
+- Запушил собранные образы в свой аккаунт на DockerHub - `gbutyaev`
+
+## Применение системы логирования в инфраструктуре на основе Docker
+
+- Обновил свой репозиторий с севрвисами, склонив ветку `logging` из гит репо `express43\reddit`
+- Собрал новые образы наших сервисов и запушил их в свой аккаунт на `Docker hub`
+- Поднял новый инстанс в `YC` с `docker-machine`, количество памяти - `8 Gb`
+- Создал докер компоуз файл для централизованного сбора логов - `docker/docker-compose-logging.yml`
+- Создал Dockerfile для образа `Fluentd`. Для докерфайла в той же директории создал файл конфигурации - `fluent.conf`
+- Собрал образ Fleuntd
+- Запустил `docker-compose` и проверил логи сервиса `post`:   
+```
+cd docker && docker-compose up -d
+docker-compose logs -f post
+```
+- Запустил систему логирования :   
+```
+$ docker-compose -f docker-compose-logging.yml up -d
+$ docker-compose down
+$ docker-compose up -d
+```
+- В UI проверил работу `Kibana` путем создания индексов и просмотров логов
+- Добавил фильтры для парсинга json-логов в `fluent.conf`
+- Перезапустил сервисы и отследил структурированные и неструктурированные логи
+- В `fluent.conf` заменил регулярные выражение `grok` шаблонами, перезапустил сервисы, проверил работу
+- Добавил в `docker-compose-logging` сервис `zipkin`
+- В `docker-compose` довил окружение `zipkin` в каждый сервис. Проверил работу в UI
+- 
